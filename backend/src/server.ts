@@ -1,10 +1,44 @@
 import express from 'express';
+import { getRepository } from 'typeorm';
+import Orphanage from './models/Orphanage';
 
 import './database/connection';
 
 const app = express();
 
 app.use(express.json()); //Para utilizar o json na aplicação
+
+//Criar orfanatos
+app.post('/orphanages', async (request, response) => {
+    const {
+        name,
+        latitude,
+        longitude,
+        about,
+        instructions,
+        opening_hours,
+        open_on_weekends,
+    } = request.body;
+
+    const orphanagesRepository = getRepository(Orphanage);
+    //Somente cria o orfanato, não salva no banco
+    const orphanage = orphanagesRepository.create({
+        name,
+        latitude,
+        longitude,
+        about,
+        instructions,
+        opening_hours,
+        open_on_weekends,
+    });
+
+    //Para salvar o orfanato criado no banco de dados
+    await orphanagesRepository.save(orphanage);
+
+    return response.json({ message: 'Hello World' });
+});
+
+app.listen(3333);
 
 
 // Rota = conjunto
@@ -25,13 +59,6 @@ app.use(express.json()); //Para utilizar o json na aplicação
 //Body (corpo da requisição -> serve para enviar dados que não caibam nos outros params, que são, geralmente, vindos de formularios):
 // http://localhost:3333/users --> Identificar um recurso
 
-
-app.get('/users', (request, response) => {
-
-    return response.json({ message: 'Hello World' });
-});
-
-app.listen(3333);
 
 //Existem tres formas de lidar com o banco de dados dentro da aplicaçã node:
 //Driver nativo, Query builder e ORM ( esse será utilizado)
