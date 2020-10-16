@@ -1,42 +1,12 @@
 import express from 'express';
-import { getRepository } from 'typeorm';
-import Orphanage from './models/Orphanage';
 
 import './database/connection';
+import routes from './routes';
 
 const app = express();
 
 app.use(express.json()); //Para utilizar o json na aplicação
-
-//Criar orfanatos
-app.post('/orphanages', async (request, response) => {
-    const {
-        name,
-        latitude,
-        longitude,
-        about,
-        instructions,
-        opening_hours,
-        open_on_weekends,
-    } = request.body;
-
-    const orphanagesRepository = getRepository(Orphanage);
-    //Somente cria o orfanato, não salva no banco
-    const orphanage = orphanagesRepository.create({
-        name,
-        latitude,
-        longitude,
-        about,
-        instructions,
-        opening_hours,
-        open_on_weekends,
-    });
-
-    //Para salvar o orfanato criado no banco de dados
-    await orphanagesRepository.save(orphanage);
-
-    return response.json({ message: 'Hello World' });
-});
+app.use(routes); //tem que ser depois do express
 
 app.listen(3333);
 
