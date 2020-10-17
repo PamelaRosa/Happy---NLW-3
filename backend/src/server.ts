@@ -1,5 +1,7 @@
 import express from 'express';
 import path from 'path';
+import cors from 'cors';
+
 import 'express-async-errors';
 
 import './database/connection';
@@ -8,6 +10,7 @@ import errorHandler from './errors/handler';
 
 const app = express();
 
+app.use(cors()); //Liberação de acesso do frontend
 app.use(express.json()); //Para utilizar o json na aplicação
 app.use(routes); //tem que ser depois do express
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // Para acessar as imagens atraves da url criada
