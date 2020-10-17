@@ -1,14 +1,17 @@
 import express from 'express';
 import path from 'path';
+import 'express-async-errors';
 
 import './database/connection';
 import routes from './routes';
+import errorHandler from './errors/handler';
 
 const app = express();
 
 app.use(express.json()); //Para utilizar o json na aplicação
 app.use(routes); //tem que ser depois do express
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads'))); // Para acessar as imagens atraves da url criada
+app.use(errorHandler);
 
 app.listen(3333);
 
