@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import uploadCOnfig from './config/upload';
+import uploadConfig from './config/upload';
 import OrphanagesController from './controllers/OrphanagesController';
 
 
 const routes = Router();
-const upload = multer(uploadCOnfig);
+const upload = multer(uploadConfig);
 
 //MVC -> Model/Views/Controllers
 
